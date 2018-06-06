@@ -1,17 +1,17 @@
 package com.demo.pojo.resp;
 
 /**
- * Í¼ï¿½ï¿½model
+ * Í¼ÎÄmodel
  *
  */
 public class Article {
-    // Í¼ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+    // Í¼ÎÄÏûÏ¢Ãû³Æ
     private String Title;
-    // Í¼ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+    // Í¼ÎÄÏûÏ¢ÃèÊö
     private String Description;
-    // Í¼Æ¬ï¿½ï¿½ï¿½Ó£ï¿½Ö§ï¿½ï¿½JPGï¿½ï¿½PNGï¿½ï¿½Ê½ï¿½ï¿½ï¿½ÏºÃµï¿½Ð§ï¿½ï¿½Îªï¿½ï¿½Í¼640*320ï¿½ï¿½Ð¡Í¼80*80ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ë¿ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½UrlÒ»ï¿½ï¿½
+    // Í¼Æ¬Á´½Ó£¬Ö§³ÖJPG¡¢PNG¸ñÊ½£¬½ÏºÃµÄÐ§¹ûÎª´óÍ¼640*320£¬Ð¡Í¼80*80£¬ÏÞÖÆÍ¼Æ¬Á´½ÓµÄÓòÃûÐèÒªÓë¿ª·¢ÕßÌîÐ´µÄ»ù±¾×ÊÁÏÖÐµÄUrlÒ»ÖÂ
     private String PicUrl;
-    // ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
+    // µã»÷Í¼ÎÄÏûÏ¢Ìø×ªÁ´½Ó
     private String Url;
 
     public String getTitle() {

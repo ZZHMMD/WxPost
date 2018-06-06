@@ -22,6 +22,10 @@ public interface TbReceiveOrderService {
 	
 	public PageInfo<SelfReceiveOrder> getSelfReceiveOrderPage(int pageNum, String openid);
 	
+	public PageInfo<SelfReceiveOrder> getSelfEnReceiveOrderPage(int pageNum, String openid);
+	
+	public PageInfo<SelfReceiveOrder> getSelfDisReceiveOrderPage(int pageNum, String openid);
+	
 	public PageInfo<SelfReceiveOrder> getSelfHistoryReceiveOrderPage(int pageNum, String openid);
 	
 

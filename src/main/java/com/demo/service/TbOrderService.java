@@ -13,7 +13,7 @@ public interface TbOrderService {
 	
 	public int insertOrder(TbOrder order);
 	/**
-	 * ���order�ķ�ҳ��Ϣ
+	 * 获得order的分页信息
 	 * @return
 	 */
 	public PageInfo<TbOrder> getOrderPageList(int pageNum); 
@@ -25,5 +25,16 @@ public interface TbOrderService {
 	public int checkUser(String id);
 	
 	public int receiveThing(String id);
-
+	
+	public int forOurSelt(int orderid);
+	
+	public int getNoAcceptOrderCount();
+	
+	public int updateEnableById(TbOrder order);
+	
+	public String getPhoneNumByOrderid(int orderid);
+	
+	public boolean isFirstTimeUse(String openid);
+	
+	public boolean isThirdTimeUse(String openid);
 }

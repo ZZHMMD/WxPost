@@ -59,7 +59,8 @@ public class OauthServiceImpl implements OauthService {
                 JSONObject result = refreshAK(rTk);
                 return result;
         }else{
-        	log.error("��ȡAkʧ��"+"errcode:"+jsonObject.getString("errcode"));
+        	log.error("获取Ak失败"+"errcode:"+jsonObject.getString("errcode"));
+        	log.info("getAkAndOpenId 错误！");
         }
 		return null;
 	}
@@ -71,7 +72,7 @@ public class OauthServiceImpl implements OauthService {
 		
         JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", null);
 		if (jsonObject.has("errcode")) {
-            log.error("ˢ��Akʧ��"+"errcode:"+jsonObject.getString("errorcode"));
+            log.error("刷新Ak失败"+"errcode:"+jsonObject.getString("errcode"));
         }
 		return jsonObject;
 	}
@@ -84,7 +85,7 @@ public class OauthServiceImpl implements OauthService {
 		 //log.info(jsonObject.toString());
 		 if(jsonObject!=null){
 			 WxUser user = new WxUser();
-			 user.setOpenid(jsonObject.getString("openid"));
+			 user.setOpenid(openid);
 			 user.setNickname(jsonObject.getString("nickname"));
 			 user.setProvince(jsonObject.getString("province"));
 			 user.setCity(jsonObject.getString("city"));
@@ -93,7 +94,6 @@ public class OauthServiceImpl implements OauthService {
 			 user.setPrivilege(jsonObject.getString("privilege"));
 			// user.setUnionid(jsonObject.getString("unionid"));
 			 user.setSex(jsonObject.getString("sex"));
-
 			 return user;
 		 }
 		return null;

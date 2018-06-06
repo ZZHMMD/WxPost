@@ -1,15 +1,14 @@
 package com.demo.controller;
-
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -191,5 +190,78 @@ public class TbOrderController {
 		}		
 		return JSON.toJSONString(result);
 	}
-
+	
+	@RequestMapping("/forOurSelf")
+	@ResponseBody
+	public String forOurSelf(int id){
+		Result result = new Result();
+		int i =  tbOrderService.forOurSelt(id);
+		if( i == 666){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/ispay")
+	@ResponseBody
+	public String isPay(int id){
+		Result result = new Result();
+		TbOrder order =  tbOrderService.getOrderById(id);
+		if( order.getPayid() ==null){
+			result.setMsg("err");
+			result.setStatue(200);
+		}else{
+			result.setMsg("ok");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/switchen")
+	@ResponseBody
+	public String setOrderEnable(HttpServletRequest request){
+		Result result = new Result();
+		TbOrder order = new TbOrder();
+		order.setId(Integer.parseInt(request.getParameter("id")));
+		order.setEnable(Boolean.parseBoolean(request.getParameter("enable")));
+		int i = tbOrderService.updateEnableById(order);
+		if(i!=0){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/phonenum")
+	@ResponseBody
+	public String getPhoneNumByOrderid(int orderid){
+		String str =  tbOrderService.getPhoneNumByOrderid(orderid);
+		Result result = new Result();
+		result.setObj(str);
+		if(str!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/isfirst")
+	@ResponseBody
+	public String isFirstTimeUse(@RequestParam(value="openid") String openid){
+		boolean flag =  tbOrderService.isFirstTimeUse(openid);
+		Result result = new Result();
+		result.setObj(flag);
+		return JSON.toJSONString(result);
+	}
+	
 }

@@ -86,7 +86,7 @@
 							var data = JSON.parse(res);
 							if(data.msg =="ok"){
 								$("#getOrder").attr("href","/WxPost/order/page/1");
-								$("#sendOrder").attr("href","sendOrder.jsp");
+								$("#sendOrder").attr("href","/WxPost/sendOrder.jsp");
 							}else{
 								$("#getOrder").attr('href',"/WxPost/panduan?openid="+openid);
 								$("#sendOrder").attr('href',"/WxPost/panduan?openid="+openid);
@@ -102,13 +102,11 @@
 						var id = $(this).data('id');
 						window.pageManager.go(id);
 					});
-
 					$('.js_category').on('click', function() {
-
 						var $this = $(this),
-							$inner = $this.next('.js_categoryInner'),
-							$page = $this.parents('.page'),
-							$parent = $(this).parent('li');
+						$inner = $this.next('.js_categoryInner'),
+						$page = $this.parents('.page'),
+						$parent = $(this).parent('li');
 						var innerH = $inner.data('height');
 						bear = $page;
 						if(!innerH) {

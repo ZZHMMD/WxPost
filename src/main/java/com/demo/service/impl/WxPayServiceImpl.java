@@ -71,11 +71,11 @@ public class WxPayServiceImpl implements WxPayService {
 			map.put("appid",appId);
 			map.put("mch_id", mchId);
 			map.put("nonce_str", WXPayUtil.generateNonceStr());
-			map.put("body", "��ȡ��ݵķ���");
+			map.put("body", "拿取快递的费用");
 			map.put("out_trade_no", uuid);
 			map.put("total_fee", price);
 			map.put("spbill_create_ip", ip);
-			map.put("notify_url", "http://www.huahuayu.com.cn/pay/getprepay");
+			map.put("notify_url", "http://www.kuaidibiaoju.com/pay/getprepay");
 			map.put("trade_type", "JSAPI");
 			map.put("openid", openid);
 			
@@ -114,7 +114,7 @@ public class WxPayServiceImpl implements WxPayService {
 		         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
 		             ipAddress = request.getRemoteAddr();
 		             if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){
-		                 //����������ȡ�������õ�IP��ַ
+		                 //根据网卡获取本机配置的IP地址
 		                 InetAddress inetAddress = null;
 		                 try {
 		                     inetAddress = InetAddress.getLocalHost();
@@ -182,14 +182,14 @@ public class WxPayServiceImpl implements WxPayService {
 	}
 	
 	/**
-	 * ���������������
+	 * 这个方法用来付款
 	 */
 	@Override
 	public String doPayFor(int orderid,HttpServletRequest request) {
 		// TODO Auto-generated method stub
 				String result = "";
 				try{
-					TbOrder order =  orderMapper.selectByPrimaryKey(orderid);
+					TbOrder order =  orderMapper.selectByPrimaryKey(orderid);		
 					int price = (order.getHurry())?100*(Integer.parseInt(order.getSize())+1):100*(Integer.parseInt(order.getSize()));
 					TbReceiveOrderExample example = new TbReceiveOrderExample();
 					example.createCriteria().andOrderIdEqualTo(orderid);
@@ -268,7 +268,7 @@ public class WxPayServiceImpl implements WxPayService {
 			map.put("openid", openid);
 			map.put("check_name", "NO_CHECK");
 			map.put("amount", resultPric+"");
-			map.put("desc", "��ȡ��ݵķ���");
+			map.put("desc", "帮取快递的费用");
 			map.put("spbill_create_ip", ip);
 			map.put("sign", WXPayUtil.generateSignature(map, appScr));
 			 xml = WXPayUtil.mapToXml(map);
@@ -276,14 +276,5 @@ public class WxPayServiceImpl implements WxPayService {
 			e.printStackTrace();
 		}
 		return xml;
-	}
-	public static void main(String args[]){
-		String price = "200";
-		int resultPric = (int) (Float.parseFloat(price)*0.9);
-		System.out.println(resultPric);
-	}
-	
-	
-	
-	
+	}	
 }

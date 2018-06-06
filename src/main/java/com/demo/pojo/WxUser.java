@@ -1,7 +1,13 @@
 package com.demo.pojo;
 
-public class WxUser {
+import java.io.Serializable;
+
+public class WxUser implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1465011966237279104L;
 	private String openid;	
 	private String nickname;	
 	private String province;

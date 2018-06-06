@@ -50,8 +50,6 @@ public class WxPayController {
 	
 	@RequestMapping("/getprepay")
 	public String getPrePayId(){
-		System.out.println("*******(99999999");
-
 		return "";
 	}
 

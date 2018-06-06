@@ -1,15 +1,15 @@
 package com.demo.pojo.req;
 
 /**
- * 锟斤拷锟斤拷锟斤拷息
+ * 链接消息
  *
  */
 public class LinkMessage extends ReqBaseMessage {
-    // 锟斤拷息锟斤拷锟斤拷
+    // 消息标题
     private String Title;
-    // 锟斤拷息锟斤拷锟斤拷
+    // 消息描述
     private String Description;
-    // 锟斤拷息锟斤拷锟斤拷
+    // 消息链接
     private String Url;
 
     public String getTitle() {

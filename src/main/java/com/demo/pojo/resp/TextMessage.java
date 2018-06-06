@@ -1,11 +1,11 @@
 package com.demo.pojo.resp;
 
 /**
- * 锟侥憋拷锟斤拷息
+ * 文本消息
  *
  */
 public class TextMessage extends BaseMessage {
-    // 锟截革拷锟斤拷锟斤拷息锟斤拷锟斤拷
+    // 回复的消息内容
     private String Content;
 
     public String getContent() {

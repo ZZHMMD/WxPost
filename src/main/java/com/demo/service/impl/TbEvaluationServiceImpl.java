@@ -38,7 +38,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 			
 			i = evaluationMapper.insert(evaluation);
 		}catch(Exception e){
-			log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n"+e);
+			log.info("******ÐÂÔöÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
 		}
 		return i;
 	}
@@ -53,7 +53,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 			
 			i = evaluationMapper.deleteByExample(example);
 		}catch(Exception e){
-			log.info("******É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n"+e);
+			log.info("******É¾³ýÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
 		}
 		
 		return i;
@@ -66,7 +66,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 		try{
              evaluation  = evaluationMapper.selectByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n"+e);
+			log.info("******²éÕÒÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
 		}
 		
 		return evaluation;
@@ -79,7 +79,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 		try{
 			i = evaluationMapper.updateByPrimaryKey(evaluation);
 		}catch(Exception e){
-			log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n"+e);
+			log.info("******¸üÐÂÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
 		}
 		
 		return i;
@@ -92,7 +92,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 		try{
 			list = evaluationMapper.selectEvaluationListByOrderId(orderId);
 		}catch(Exception e){
-			log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½Ê§ï¿½ï¿½******\n"+e);
+			log.info("******²éÕÒÆÀÂÛÁÐ±íÊ§°Ü******\n"+e);
 		}
 		
 		return list;
@@ -110,7 +110,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 			
 			
 		}catch(Exception e){
-			log.info("******ï¿½ï¿½È¡ï¿½ï¿½ï¿½Û·ï¿½Ò³ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******");
+			log.info("******»ñÈ¡ÆÀÂÛ·ÖÒ³ÐÅÏ¢Ê§°Ü******");
 		}
 		
 		return page;
@@ -123,7 +123,7 @@ public class TbEvaluationServiceImpl implements TbEvaluationService {
 		try{
 			i= evaluationMapper.deleteByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n");
+			log.info("******É¾³ýÆÀÂÛÐÅÏ¢Ê§°Ü******\n");
 			e.printStackTrace();
 		}
 		

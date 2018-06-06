@@ -1,6 +1,9 @@
 package com.demo.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -32,7 +36,7 @@ public class TbUserController {
     public String getUserById(@PathVariable String id,Model model){
 		TbUser user =  tbUserService.getUserById(id);
 		Result result = new Result();
-		result.setObj(null);
+		result.setObj(user);
 		if(user!=null){
 			result.setMsg("ok");
 			result.setStatue(200);
@@ -77,7 +81,8 @@ public class TbUserController {
 		return "";
 	}
 	
-	@RequestMapping("/updateuser")
+	@RequestMapping("/xiaojun/updateuser")
+	@ResponseBody
     public String updateUserById(TbUser user,Model model){
 		
 		int i = tbUserService.updateUserById(user);
@@ -90,8 +95,7 @@ public class TbUserController {
 			result.setMsg("err");
 			result.setStatue(500);	
 		}
-		model.addAttribute("result", result);	
-		return "";
+		return JSON.toJSONString(result);
 	}
 	
 	@RequestMapping("/panduan")
@@ -129,11 +133,11 @@ public class TbUserController {
 			
 			if(aUser!=null){
 				tbUserService.updateUserById(userA);
-				result.setMsg("���³ɹ�");
+				result.setMsg("更新成功");
 				result.setStatue(200);
 			}else{
 				tbUserService.insertUser(userA);
-				result.setMsg("ע��ɹ�");
+				result.setMsg("注册成功");
 				result.setStatue(500);
 			}
 			String res =  JSON.toJSONString(result);
@@ -153,14 +157,88 @@ public class TbUserController {
 		Result result = new Result();
 		result.setObj(null);
 		if(i != 0){
-			result.setMsg("�û����ͨ��!");
+			result.setMsg("用户审核通过!");
 			result.setStatue(200);
 		}else{
-			result.setMsg("�û���˲�ͨ��!");
+			result.setMsg("用户审核不通过!");
 			result.setStatue(500);
 		}
 		return JSONObject.toJSONString(result);
 	}
+	
+	@RequestMapping("/getuser")
+	@ResponseBody
+	public String getUserByPhoneNum(String phonenum) {
+		TbUser user = tbUserService.getUserByPhoneNum(phonenum);
+		System.out.println(phonenum);
+		Result result = new Result();
+		result.setObj(user);
+		if(user != null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("用户不存在！");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/chanen")
+	@ResponseBody
+	public String changeEnable(String phonenum) {
+		System.out.println(phonenum);
+		int i = tbUserService.changeEnable(phonenum);
+		Result result = new Result();
+		result.setObj(null);
+		if(i!=0){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("更改用户权限失败!");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/chanenin")
+	@ResponseBody
+	public String changeEnableIn(String phonenum) {
+		System.out.println(phonenum);
+		int i = tbUserService.changeEnalbeIn(phonenum);
+		Result result = new Result();
+		result.setObj(null);
+		if(i!=0){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("更改用户权限失败!");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	@RequestMapping("/getenlist")
+	@ResponseBody
+	public String getEnableList() {
+		List<TbUser> list = tbUserService.getEnableUser();
+		Result result = new Result();
+		result.setObj(list);
+		if(list!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("查找接单人员失败!");
+			result.setStatue(500);
+		}
+		return JSONObject.toJSONString(result);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

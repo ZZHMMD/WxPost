@@ -55,10 +55,10 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 			   List<TbReceiveOrder> list = receiveOrderMapper.selectByExample(example);
 			   
 			   if(list.isEmpty()){
+				   Date date = new Date();
 				   TbOrder order = orderMapper.selectByPrimaryKey(receiveOrder.getOrderId());
 				   order.setStatus(2);
-				   int flag =  orderMapper.updateByPrimaryKey(order);
-				   Date date = new Date();
+				   int flag = orderMapper.updateByPrimaryKeySelective(order);
 				   receiveOrder.setStatus((short)1);
 				   receiveOrder.setUpdateTime(new java.sql.Date(date.getTime()));
 				   receiveOrder.setCreateTime(new java.sql.Date(date.getTime()));
@@ -70,14 +70,13 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		   }else if( j == 2){
 			   i=2;
 		   }else if(j==4){
-			   //�û�ûע��
+			   //用户没注册
 			   i=5;   
 		   }else{
 			   i=3;
 		   }
-		   
 	   }catch(Exception e){
-		   log.info("******���ӽӵ���Ϣʧ��******");
+		   log.info("******增加接单信息失败******");
 		   e.printStackTrace();
 	   }
 		return i;
@@ -90,7 +89,7 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		try{
 			i = receiveOrderMapper.deleteByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******ɾ���ӵ���Ϣʧ��******\n"+e);
+			log.info("******删除接单信息失败******\n"+e);
 		}
 		return i;
 	}
@@ -100,9 +99,9 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		// TODO Auto-generated method stub
 		int i=0;
 		try{
-			i =  receiveOrderMapper.updateByPrimaryKey(receiveOrder);
+			i =  receiveOrderMapper.updateByPrimaryKeySelective(receiveOrder);
 		}catch(Exception e){
-			log.info("******���½ӵ���Ϣʧ��******\n"+e);
+			log.info("******更新接单信息失败******\n"+e);
 		}
 		return i;
 	}
@@ -114,7 +113,7 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		try{
 			receiveOrder = receiveOrderMapper.selectByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******���ҽӵ���Ϣʧ��******\n"+e);
+			log.info("******查找接单信息失败******\n"+e);
 		}
 		return receiveOrder;
 	}
@@ -130,7 +129,7 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 			
 			//page = new PageInfo<TbReceiveOrder>(list);
 		}catch(Exception e){
-			log.info("******������ʷ�ӵ�����ʧ��******");
+			log.info("******查找历史接单数据失败******");
 		}
 		return page;
 	}
@@ -146,10 +145,10 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		if(list.size() >0){
 			 user = list.get(0);
 				if(!user.getEnable()){
-					//�˺�δͨ����֤
+					//账号未通过验证
 					return 2;
 				}else if(user.getCreditScore() <=80){
-					//�˺��������ֹ���
+					//账号信誉积分过低
 					return 3;
 				}
 		}else{
@@ -166,39 +165,42 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 		try{
 			PageHelper.startPage(pageNum, pageSize);
 			List<SelfReceiveOrder> list = receiveOrderMapper.selectSelfReceiveOrderByOpenid(openid);
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			for(int i=0;i<list.size();i++){
 				SelfReceiveOrder receiveOrder = list.get(i);
+				//System.out.println("getSelfReceiveOrderPage:"+receiveOrder.getFetchg());
 				receiveOrder.setShowOrderTime(format.format(receiveOrder.getUpdateTime()));
 				receiveOrder.setShowReceiveOrderTime(format.format(receiveOrder.getReceiveOrderTime()));
 				if(receiveOrder.isHurry()){
 					receiveOrder.setSize((Integer.parseInt(receiveOrder.getSize())+1)+"");
 				}
 				if(receiveOrder.getGetAddress().equals("1")){
-					receiveOrder.setGetAddress("����լ25��");
+					receiveOrder.setGetAddress("南区宅25栋");
 				}else if(receiveOrder.getGetAddress().equals("2")){
-					receiveOrder.setGetAddress("����լ17��");
+					receiveOrder.setGetAddress("南区宅17栋");
 				}else if(receiveOrder.getGetAddress().equals("3")){
-					receiveOrder.setGetAddress("����լ35��");
+					receiveOrder.setGetAddress("南区宅35栋顺丰");
 				}else if(receiveOrder.getGetAddress().equals("4")){
-					receiveOrder.setGetAddress("����7�������鱨ͤ");
+					receiveOrder.setGetAddress("南区7栋对面书报亭");
 				}else if(receiveOrder.getGetAddress().equals("5")){
-					receiveOrder.setGetAddress("����һʳ�����鱨ͤ");
+					receiveOrder.setGetAddress("南区一食堂旁书报亭");
 				}else if(receiveOrder.getGetAddress().equals("6")){
-					receiveOrder.setGetAddress("������Ұ���ٺ������վ");
+					receiveOrder.setGetAddress("北区绿野仙踪后菜鸟驿站");
 				}else if(receiveOrder.getGetAddress().equals("7")){
-					receiveOrder.setGetAddress("������С��������");
+					receiveOrder.setGetAddress("南区宅35栋邮政");
 				}else if(receiveOrder.getGetAddress().equals("8")){
-					receiveOrder.setGetAddress("����У�ſ�");
+					receiveOrder.setGetAddress("南区校门口");
 				}else if(receiveOrder.getGetAddress().equals("9")){
-					receiveOrder.setGetAddress("������������");
+					receiveOrder.setGetAddress("南区后门邮政");
+				}else if(receiveOrder.getGetAddress().equals("10")){
+					receiveOrder.setGetAddress("北区京东派");
+				}else if(receiveOrder.getGetAddress().equals("11")){
+					receiveOrder.setGetAddress("南区京东派");
 				}
 			}
-			
 			page = new PageInfo<SelfReceiveOrder>(list);
-			
 		}catch(Exception e){
-			log.info("******���ҽӵ���¼ʧ��******");
+			log.info("******查找接单记录失败******");
 			e.printStackTrace();
 		}
 		return page;
@@ -211,7 +213,7 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 				try{
 					PageHelper.startPage(pageNum, pageSize);
 					List<SelfReceiveOrder> list = receiveOrderMapper.selectSelfHistoryReceiveOrderByOpenid(openid);
-					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 					for(int i=0;i<list.size();i++){
 						SelfReceiveOrder receiveOrder = list.get(i);
 						receiveOrder.setShowOrderTime(format.format(receiveOrder.getUpdateTime()));
@@ -220,31 +222,129 @@ public class TbReceiveOrderServiceImpl implements TbReceiveOrderService {
 							receiveOrder.setSize((Integer.parseInt(receiveOrder.getSize())+1)+"");
 						}
 						if(receiveOrder.getGetAddress().equals("1")){
-							receiveOrder.setGetAddress("����լ25��");
+							receiveOrder.setGetAddress("南区宅25栋");
 						}else if(receiveOrder.getGetAddress().equals("2")){
-							receiveOrder.setGetAddress("����լ17��");
+							receiveOrder.setGetAddress("南区宅17栋");
 						}else if(receiveOrder.getGetAddress().equals("3")){
-							receiveOrder.setGetAddress("����լ35��");
+							receiveOrder.setGetAddress("南区宅35栋顺丰");
 						}else if(receiveOrder.getGetAddress().equals("4")){
-							receiveOrder.setGetAddress("����7�������鱨ͤ");
+							receiveOrder.setGetAddress("南区7栋对面书报亭");
 						}else if(receiveOrder.getGetAddress().equals("5")){
-							receiveOrder.setGetAddress("����һʳ�����鱨ͤ");
+							receiveOrder.setGetAddress("南区一食堂旁书报亭");
 						}else if(receiveOrder.getGetAddress().equals("6")){
-							receiveOrder.setGetAddress("������Ұ���ٺ������վ");
+							receiveOrder.setGetAddress("北区绿野仙踪后菜鸟驿站");
 						}else if(receiveOrder.getGetAddress().equals("7")){
-							receiveOrder.setGetAddress("������С��������");
+							receiveOrder.setGetAddress("南区宅35栋邮政");
 						}else if(receiveOrder.getGetAddress().equals("8")){
-							receiveOrder.setGetAddress("����У�ſ�");
+							receiveOrder.setGetAddress("南区校门口");
 						}else if(receiveOrder.getGetAddress().equals("9")){
-							receiveOrder.setGetAddress("������������");
+							receiveOrder.setGetAddress("南区后门邮政");
+						}else if(receiveOrder.getGetAddress().equals("10")){
+							receiveOrder.setGetAddress("北区京东派");
+						}else if(receiveOrder.getGetAddress().equals("11")){
+							receiveOrder.setGetAddress("南区京东派");
 						}
 					}
 					page = new PageInfo<SelfReceiveOrder>(list);
 				}catch(Exception e){
-					log.info("******���ҽӵ���¼ʧ��******");
+					log.info("******查找接单记录失败******");
 					e.printStackTrace();
 				}
 				return page;
+	}
+
+	@Override
+	public PageInfo<SelfReceiveOrder> getSelfEnReceiveOrderPage(int pageNum, String openid) {
+		PageInfo<SelfReceiveOrder> page = null;
+		try{
+			PageHelper.startPage(pageNum, pageSize);
+			List<SelfReceiveOrder> list = receiveOrderMapper.selectSelfEnReceiveOrderByOpenid(openid);
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			for(int i=0;i<list.size();i++){
+				SelfReceiveOrder receiveOrder = list.get(i);
+				//System.out.println("getSelfReceiveOrderPage:"+receiveOrder.getFetchg());
+				receiveOrder.setShowOrderTime(format.format(receiveOrder.getUpdateTime()));
+				receiveOrder.setShowReceiveOrderTime(format.format(receiveOrder.getReceiveOrderTime()));
+				if(receiveOrder.isHurry()){
+					receiveOrder.setSize((Integer.parseInt(receiveOrder.getSize())+1)+"");
+				}
+				if(receiveOrder.getGetAddress().equals("1")){
+					receiveOrder.setGetAddress("南区宅25栋");
+				}else if(receiveOrder.getGetAddress().equals("2")){
+					receiveOrder.setGetAddress("南区宅17栋");
+				}else if(receiveOrder.getGetAddress().equals("3")){
+					receiveOrder.setGetAddress("南区宅35栋顺丰");
+				}else if(receiveOrder.getGetAddress().equals("4")){
+					receiveOrder.setGetAddress("南区7栋对面书报亭");
+				}else if(receiveOrder.getGetAddress().equals("5")){
+					receiveOrder.setGetAddress("南区一食堂旁书报亭");
+				}else if(receiveOrder.getGetAddress().equals("6")){
+					receiveOrder.setGetAddress("北区绿野仙踪后菜鸟驿站");
+				}else if(receiveOrder.getGetAddress().equals("7")){
+					receiveOrder.setGetAddress("南区宅35栋邮政");
+				}else if(receiveOrder.getGetAddress().equals("8")){
+					receiveOrder.setGetAddress("南区校门口");
+				}else if(receiveOrder.getGetAddress().equals("9")){
+					receiveOrder.setGetAddress("南区后门邮政");
+				}else if(receiveOrder.getGetAddress().equals("10")){
+					receiveOrder.setGetAddress("北区京东派");
+				}else if(receiveOrder.getGetAddress().equals("11")){
+					receiveOrder.setGetAddress("南区京东派");
+				}
+			}
+			page = new PageInfo<SelfReceiveOrder>(list);
+		}catch(Exception e){
+			log.info("******查找接单记录失败******");
+			e.printStackTrace();
+		}
+		return page;
+	}
+
+	@Override
+	public PageInfo<SelfReceiveOrder> getSelfDisReceiveOrderPage(int pageNum, String openid) {
+		PageInfo<SelfReceiveOrder> page = null;
+		try{
+			PageHelper.startPage(pageNum, pageSize);
+			List<SelfReceiveOrder> list = receiveOrderMapper.selectSelfDisReceiveOrderByOpenid(openid);
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			for(int i=0;i<list.size();i++){
+				SelfReceiveOrder receiveOrder = list.get(i);
+				//System.out.println("getSelfReceiveOrderPage:"+receiveOrder.getFetchg());
+				receiveOrder.setShowOrderTime(format.format(receiveOrder.getUpdateTime()));
+				receiveOrder.setShowReceiveOrderTime(format.format(receiveOrder.getReceiveOrderTime()));
+				if(receiveOrder.isHurry()){
+					receiveOrder.setSize((Integer.parseInt(receiveOrder.getSize())+1)+"");
+				}
+				if(receiveOrder.getGetAddress().equals("1")){
+					receiveOrder.setGetAddress("南区宅25栋");
+				}else if(receiveOrder.getGetAddress().equals("2")){
+					receiveOrder.setGetAddress("南区宅17栋");
+				}else if(receiveOrder.getGetAddress().equals("3")){
+					receiveOrder.setGetAddress("南区宅35栋顺丰");
+				}else if(receiveOrder.getGetAddress().equals("4")){
+					receiveOrder.setGetAddress("南区7栋对面书报亭");
+				}else if(receiveOrder.getGetAddress().equals("5")){
+					receiveOrder.setGetAddress("南区一食堂旁书报亭");
+				}else if(receiveOrder.getGetAddress().equals("6")){
+					receiveOrder.setGetAddress("北区绿野仙踪后菜鸟驿站");
+				}else if(receiveOrder.getGetAddress().equals("7")){
+					receiveOrder.setGetAddress("南区宅35栋邮政");
+				}else if(receiveOrder.getGetAddress().equals("8")){
+					receiveOrder.setGetAddress("南区校门口");
+				}else if(receiveOrder.getGetAddress().equals("9")){
+					receiveOrder.setGetAddress("南区后门邮政");
+				}else if(receiveOrder.getGetAddress().equals("10")){
+					receiveOrder.setGetAddress("北区京东派");
+				}else if(receiveOrder.getGetAddress().equals("11")){
+					receiveOrder.setGetAddress("南区京东派");
+				}
+			}
+			page = new PageInfo<SelfReceiveOrder>(list);
+		}catch(Exception e){
+			log.info("******查找接单记录失败******");
+			e.printStackTrace();
+		}
+		return page;
 	}
 
 }

@@ -31,7 +31,9 @@
     <context:property-placeholder location="classpath:properties/data.properties" /> 
     
     <!--静态资源拦截问题  -->
-    <mvc:resources location="/assert/" mapping="/assert/**"/>
+    <mvc:resources location="/assert/"  mapping="/assert/**"/>
+    
+    
     <!-- 视图解析器 -->  
     <bean  
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">  

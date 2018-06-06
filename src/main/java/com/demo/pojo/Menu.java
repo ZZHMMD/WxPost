@@ -1,11 +1,13 @@
 package com.demo.pojo;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Menu {
+public class Menu implements Serializable {
 	
-	
-  private String id;
+	private static final long serialVersionUID = 8196479513740513537L;
+
+	private String id;
 
     private String accountId;
 

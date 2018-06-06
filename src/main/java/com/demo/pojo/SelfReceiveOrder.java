@@ -1,9 +1,10 @@
 package com.demo.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SelfReceiveOrder {
-	
+public class SelfReceiveOrder implements Serializable {
+	private static final long serialVersionUID = 8128178100429978401L;
 	private int id;
 	private String openid;
 	private String orderId;
@@ -21,10 +22,15 @@ public class SelfReceiveOrder {
 	private String showOrderTime;
 	private String showReceiveOrderTime;
 	private String username;
+	private boolean fetchg;
 	private Date receiveOrderTime;
 	
-	
-	
+	public boolean getFetchg() {
+		return fetchg;
+	}
+	public void setFetchg(boolean fetchg) {
+		this.fetchg = fetchg;
+	}
 	public int getId() {
 		return id;
 	}

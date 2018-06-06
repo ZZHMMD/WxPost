@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 								</div>
 								<div class="weui-form-preview__ft">
-									<a href="javascript:;" data-id="${item.id}" class="weui-form-preview__btn weui-form-preview__btn_primary orderConfirm">接单</a>
+									<a href="javascript:;" data-id="${item.id}" data-pnum="" class="weui-form-preview__btn weui-form-preview__btn_primary orderConfirm">接单</a>
 								</div>
 							</div>
 						</li>
@@ -110,6 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<script type="text/javascript">
 				$(function(){
+					//Bmob.initialize("297342c49eceb9acee09a8f679cbe358", "764c4df56531ceb676144109958e3578");
 					var page =1 ;
 					var openid = getCookie("openid");
 					function toast( msg){
@@ -160,10 +161,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							+'		<div class="weui-form-preview__item">'
 							+'			<label class="weui-form-preview__label">发布时间</label>'
 							+'			<span class="weui-form-preview__value">'+list[i].showTime+'</span>'
-							+'		</div>'
-							+'		<div class="weui-form-preview__item">'
-							+'		    <label class="weui-form-preview__label">取货码</label>'
-							+'			<span class="weui-form-preview__value">'+list[i].receiveNum+'</span>'
 							+'		</div>'
 							+'		<div class="weui-form-preview__item">'
 							+'			<label class="weui-form-preview__label">取货地址</label>'
@@ -223,8 +220,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						success:function(res){
 							var data = JSON.parse(res);
 							if(data.msg == "ok"){
-								toast("接单成功!");
+
+/*	
+								$.ajax({
+									url:'/WxPost/order/phonenum',
+									type:'POST',
+									data:{'orderid':id},
+									dataType:'json',
+									success:function(res){
+										var data = JSON.parse(res);
+										console.log(data);
+										window.location.href = "/WxPost/order/page/1";
+									Bmob.Sms.requestSmsCode({"mobilePhoneNumber": data.obj, "template":"模板三"} ).then(function(obj) {
+                         					console.log("发送成功!");
+											toast("接单成功!");
+											window.location.href = "/WxPost/order/page/1"
+                         				}, function(err){
+                         					console.log("发送失败!");
+											toast("接单成功!");
 								window.location.href = "/WxPost/order/page/1"
+                         				});
+									}
+								});*/
+								window.location.href = "/WxPost/order/page/1";
 							}else if(data.msg == "2"){
 								loadingToast("用户未通过校验接单失败!");
 							}else if(data.msg == "3"){
@@ -248,6 +266,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script src="<%=basePath %>./assert/example.js"></script>
 		<script src="<%=basePath %>assert/cookieutil.js"></script>
 		<script src="<%=basePath %>assert/dropload.min.js"></script>
+		<%-- <script src="<%=basePath %>assert/bmob-min.js"></script> --%>
 	</body>
 
 </html>

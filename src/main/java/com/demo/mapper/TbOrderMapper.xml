@@ -85,13 +85,33 @@
   			UPDATE tb_order o,
  				tb_receive_order r
 				SET o. STATUS = #{orderstatus},
-					 r. STATUS = #{receivestatus},
-					 o.update_time= #{updatetime},
-					 r.update_time = #{updatetime}
+					 r. STATUS = #{receivestatus}
 				WHERE
 					o.id = #{id}	
 				AND r.order_id = #{id}
   </update>
+  <select id="getUnFetchCount" resultType="Integer">
+  		select count(*) from tb_order where status =1
+  </select>
+  <select id="getOrderCountByOpenid" parameterType="java.lang.String" resultType="Integer">
+  		select count(*) from tb_order where openid=#{openid}
+  </select>
+  
+  <select id="getThirdCountFrom11_11" parameterType="java.lang.String" resultType="Integer">
+  		select count(*) from tb_order where openid=#{openid} and create_time>'2017-11-11' ;
+  </select>
+  
+  
+ 
+  <select id="forOurSelf"  parameterType="int"  resultType="int">
+  SELECT
+		tb_user.credit_score
+	FROM
+		tb_receive_order
+		INNER JOIN tb_user ON tb_receive_order.openid = tb_user.id
+	WHERE
+		tb_receive_order.order_id = #{orderid}
+  </select>
   <select id="getTheUser" parameterType="Integer" resultType="com.demo.pojo.TbUser">
       SELECT
 		tb_user.`name`,
@@ -109,7 +129,7 @@
        	from 
        		tb_order c
        	where 
-       		c.openid=#{openid} and (c.status=1 or c.status=2) 
+       		c.openid=#{openid} and (c.status=1 or c.status=2)
        	order by 
        		c.update_time DESC
   </select>
@@ -124,7 +144,7 @@
         	update_time DESC
   </select>
   <select id="getHistoryOrderList" parameterType="String" resultMap="BaseResultMap">
-       select <include refid="Base_Column_List" /> from tb_order c where c.openid=#{openid} and (c.status=3 or c.status=4) order by c.update_time DESC
+       select <include refid="Base_Column_List" /> from tb_order c where c.openid=#{openid} and (c.status=3 or c.status=4)  order by c.update_time DESC
   </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.pojo.TbOrderExample" >
     select
@@ -140,7 +160,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tb_order
@@ -298,9 +318,6 @@
       <if test="record.descration != null" >
         descration = #{record.descration,jdbcType=VARCHAR},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -327,7 +344,6 @@
       size = #{record.size,jdbcType=VARCHAR},
       hurry = #{record.hurry,jdbcType=BIT},
       descration = #{record.descration,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       enable = #{record.enable,jdbcType=BIT},
       status = #{record.status,jdbcType=INTEGER}
@@ -365,14 +381,11 @@
       <if test="descration != null" >
         descration = #{descration,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="enable != null" >
         enable = #{enable,jdbcType=BIT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=DATE},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
@@ -391,7 +404,6 @@
       size = #{size,jdbcType=VARCHAR},
       hurry = #{hurry,jdbcType=BIT},
       descration = #{descration,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       enable = #{enable,jdbcType=BIT},
       status = #{status,jdbcType=INTEGER}

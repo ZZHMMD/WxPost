@@ -72,21 +72,22 @@
   </sql>
   
   <select id="selectSelfHistoryReceiveOrderByOpenid" parameterType="String" resultType="com.demo.pojo.SelfReceiveOrder">
-  				SELECT
+  	SELECT
 		tb_receive_order.id,
-		tb_receive_order.update_time AS receiveOrderTime,
+		tb_receive_order.create_time AS receiveOrderTime,
 		tb_receive_order.order_id AS orderId,
 		tb_user.`name` AS username,
 		tb_user.phone_num AS phoneNum,
 		tb_user.student_card AS studentCard,
-		tb_order.`name` AS `name`,
+		tb_order.`name` AS  name,
 		tb_order.receive_num AS receiveNum,
 		tb_order.receive_address AS receiveAddress,
 		tb_order.get_address AS getAddress,
 		tb_order.size,
 		tb_order.descration,
 		tb_order.hurry,
-		tb_order.update_time AS updateTime,
+		tb_order.create_time AS updateTime,
+		tb_order.enable as fetchg,
 		tb_order.openid
 FROM
 		tb_receive_order
@@ -102,19 +103,20 @@ ORDER BY
   <select id="selectSelfReceiveOrderByOpenid" parameterType="String" resultType="com.demo.pojo.SelfReceiveOrder">
   	SELECT
 		tb_receive_order.id,
-		tb_receive_order.update_time AS receiveOrderTime,
+		tb_receive_order.create_time AS receiveOrderTime,
 		tb_receive_order.order_id AS orderId,
 		tb_user.`name` AS username,
 		tb_user.phone_num AS phoneNum,
 		tb_user.student_card AS studentCard,
-		tb_order.`name` AS `name`,
+		tb_order.`name` AS name,
 		tb_order.receive_num AS receiveNum,
 		tb_order.receive_address AS receiveAddress,
 		tb_order.get_address AS getAddress,
 		tb_order.size,
 		tb_order.descration,
 		tb_order.hurry,
-		tb_order.update_time AS updateTime,
+		tb_order.create_time AS updateTime,
+		tb_order.enable as fetchg,
 		tb_order.openid
 FROM
 		tb_receive_order
@@ -125,6 +127,64 @@ WHERE
 		tb_receive_order.`status` = 1
 ORDER BY
 		receiveOrderTime DESC
+  </select>
+  
+  <select id="selectSelfEnReceiveOrderByOpenid"  parameterType="String" resultType="com.demo.pojo.SelfReceiveOrder">
+  	SELECT
+		tb_receive_order.id,
+		tb_receive_order.create_time AS receiveOrderTime,
+		tb_receive_order.order_id AS orderId,
+		tb_user.`name` AS username,
+		tb_user.phone_num AS phoneNum,
+		tb_user.student_card AS studentCard,
+		tb_order.`name` AS name,
+		tb_order.receive_num AS receiveNum,
+		tb_order.receive_address AS receiveAddress,
+		tb_order.get_address AS getAddress,
+		tb_order.size,
+		tb_order.descration,
+		tb_order.hurry,
+		tb_order.create_time AS updateTime,
+		tb_order.enable as fetchg,
+		tb_order.openid
+FROM
+		tb_receive_order
+		INNER JOIN tb_order ON tb_receive_order.order_id = tb_order.id
+		INNER JOIN tb_user ON tb_order.openid = tb_user.id
+WHERE
+		tb_receive_order.openid = #{openid} AND
+		tb_receive_order.`status` = 1 AND tb_order.enable=true
+ORDER BY
+	  tb_receive_order.id DESC
+  </select>
+  
+  <select id="selectSelfDisReceiveOrderByOpenid" parameterType="String" resultType="com.demo.pojo.SelfReceiveOrder">
+  	SELECT
+		tb_receive_order.id,
+		tb_receive_order.create_time AS receiveOrderTime,
+		tb_receive_order.order_id AS orderId,
+		tb_user.`name` AS username,
+		tb_user.phone_num AS phoneNum,
+		tb_user.student_card AS studentCard,
+		tb_order.`name` AS name,
+		tb_order.receive_num AS receiveNum,
+		tb_order.receive_address AS receiveAddress,
+		tb_order.get_address AS getAddress,
+		tb_order.size,
+		tb_order.descration,
+		tb_order.hurry,
+		tb_order.create_time AS updateTime,
+		tb_order.enable as fetchg,
+		tb_order.openid
+FROM
+		tb_receive_order
+		INNER JOIN tb_order ON tb_receive_order.order_id = tb_order.id
+		INNER JOIN tb_user ON tb_order.openid = tb_user.id
+WHERE
+		tb_receive_order.openid = #{openid} AND
+		tb_receive_order.`status` = 1 AND tb_order.enable=false
+ORDER BY
+		concat(tb_receive_order.id,tb_order.get_address) DESC
   </select>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.pojo.TbReceiveOrderExample" >
@@ -147,6 +207,11 @@ ORDER BY
     from tb_receive_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectNoPayOrder" resultMap="BaseResultMap">
+  		select * from tb_receive_order where status =1
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_receive_order
     where id = #{id,jdbcType=INTEGER}
@@ -208,7 +273,7 @@ ORDER BY
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.demo.pojo.TbReceiveOrderExample" resultType="java.lang.Integer" >
+  <select id="countByExample"  parameterType="com.demo.pojo.TbReceiveOrderExample" resultType="java.lang.Integer" >
     select count(*) from tb_receive_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -229,9 +294,6 @@ ORDER BY
       <if test="record.status != null" >
         status = #{record.status,jdbcType=SMALLINT},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -246,7 +308,6 @@ ORDER BY
       openid = #{record.openid,jdbcType=VARCHAR},
       order_id = #{record.orderId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=SMALLINT},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -264,9 +325,6 @@ ORDER BY
       <if test="status != null" >
         status = #{status,jdbcType=SMALLINT},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -278,7 +336,6 @@ ORDER BY
     set openid = #{openid,jdbcType=VARCHAR},
       order_id = #{orderId,jdbcType=INTEGER},
       status = #{status,jdbcType=SMALLINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

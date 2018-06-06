@@ -1,9 +1,14 @@
 package com.demo.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
+public class TbOrder implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8313077640111060805L;
 
-public class TbOrder {
-    private Integer id;
+	private Integer id;
     
     private String username;
     

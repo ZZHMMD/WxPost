@@ -1,7 +1,5 @@
 package com.demo.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,7 +88,6 @@ public class TbReceiveOrderController {
 		int i = receiveOrderService.updateReceiveOrderById(receiveOrder);
 		Result result = new Result();
 		result.setObj(null);
-		
 		if(i!=0){
 			result.setMsg("ok");
 			result.setStatue(200);
@@ -123,6 +120,70 @@ public class TbReceiveOrderController {
 	@ResponseBody
 	public String getSelfReceiveOrderPage(@PathVariable String pageNum,String openid){
 		PageInfo<SelfReceiveOrder> page = receiveOrderService.getSelfReceiveOrderPage(Integer.parseInt(pageNum), openid);
+		Result result = new Result();
+		result.setObj(page);
+		if(page!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		return JSON.toJSONString(result);
+	}
+	
+	@RequestMapping("/enpage/{pageNum}")
+	public String getSelfEnReceiveOrderPage(@PathVariable String pageNum, String openid,Model model){
+		PageInfo<SelfReceiveOrder> page = receiveOrderService.getSelfEnReceiveOrderPage(Integer.parseInt(pageNum), openid);
+		Result result = new Result();
+		result.setObj(page);
+		if(page!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		model.addAttribute("result", result);
+		return "billList";
+	}
+	
+	@RequestMapping("/enpagejson/{pageNum}")
+	@ResponseBody
+	public String getSelfEnReceiveOrderPage(@PathVariable String pageNum,String openid){
+		PageInfo<SelfReceiveOrder> page = receiveOrderService.getSelfEnReceiveOrderPage(Integer.parseInt(pageNum), openid);
+		Result result = new Result();
+		result.setObj(page);
+		if(page!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		return JSON.toJSONString(result);
+	}
+	
+	@RequestMapping("/dispage/{pageNum}")
+	public String getSelfDisReceiveOrderPage(@PathVariable String pageNum, String openid,Model model) throws Exception{
+		
+		/*PageInfo<SelfReceiveOrder> page = receiveOrderService.getSelfDisReceiveOrderPage(Integer.parseInt(pageNum), openid);
+		Result result = new Result();
+		result.setObj(page);
+		if(page!=null){
+			result.setMsg("ok");
+			result.setStatue(200);
+		}else{
+			result.setMsg("err");
+			result.setStatue(500);
+		}
+		model.addAttribute("result", result);*/
+		return "billList";
+	}
+	@RequestMapping("/dispagejson/{pageNum}")
+	@ResponseBody
+	public String getSelfDisReceiveOrderPage(@PathVariable String pageNum,String openid){
+		PageInfo<SelfReceiveOrder> page = receiveOrderService.getSelfDisReceiveOrderPage(Integer.parseInt(pageNum), openid);
 		Result result = new Result();
 		result.setObj(page);
 		if(page!=null){
