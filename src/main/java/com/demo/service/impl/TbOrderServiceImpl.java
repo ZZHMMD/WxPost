@@ -134,7 +134,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 				}else if(order.getGetAddress().equals("4")){
 					order.setGetAddress("南区7栋对面书报亭");
 				}else if(order.getGetAddress().equals("5")){
-					order.setGetAddress("南区一食堂旁书报亭");
+					order.setGetAddress("火山驿站");
 				}else if(order.getGetAddress().equals("6")){
 					order.setGetAddress("北区绿野仙踪后菜鸟驿站");
 				}else if(order.getGetAddress().equals("7")){
