@@ -1,7 +1,14 @@
 package com.demo.pojo;
 
-public class JsSdkConfig {
+import java.io.Serializable;
+
+public class JsSdkConfig implements Serializable{
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9118620185010483270L;
 	private String appid;
 	private Long timestamp;
 	private String noncestr;

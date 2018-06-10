@@ -1,14 +1,20 @@
 package com.demo.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbUser {
-    private String id;
+public class TbUser implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8966005664733381390L;
+
+	private String id;
 
     private String name;
 
     private String phoneNum;
-
+    
     private String school;
 
     private String college;
@@ -122,4 +128,13 @@ public class TbUser {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
+
+	@Override
+	public String toString() {
+		return "TbUser [id=" + id + ", name=" + name + ", phoneNum=" + phoneNum + ", school=" + school + ", college="
+				+ college + ", studentCardNum=" + studentCardNum + ", studentCard=" + studentCard + ", creditScore="
+				+ creditScore + ", location=" + location + ", enable=" + enable + ", createtime=" + createtime
+				+ ", updatetime=" + updatetime + "]";
+	}
+    
 }

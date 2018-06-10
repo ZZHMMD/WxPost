@@ -31,4 +31,8 @@ public interface TbUserMapper {
     int updateByPrimaryKey(TbUser record);
     
     int updateUserEnable(UserCheck userCheck);
+    
+    String getPhoneNumByOrderid(int id);
+    
+    TbUser getUserByPhoneNum(String phonenum);
 }

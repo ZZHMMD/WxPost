@@ -1,19 +1,19 @@
 package com.demo.pojo.resp;
 
 /**
- * ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½à£¨ï¿½ï¿½ï¿½ï¿½ï¿½Êºï¿½ -> ï¿½ï¿½Í¨ï¿½Ã»ï¿½ï¿½ï¿½
+ * ÏûÏ¢»ùÀà£¨¹«ÖÚÕÊºÅ -> ÆÕÍ¨ÓÃ»§£©
  *
  */
 public class BaseMessage {
-    // ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ÊºÅ£ï¿½ï¿½Õµï¿½ï¿½ï¿½OpenIDï¿½ï¿½
+    // ½ÓÊÕ·½ÕÊºÅ£¨ÊÕµ½µÄOpenID£©
     private String ToUserName;
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Åºï¿½
+    // ¿ª·¢ÕßÎ¢ÐÅºÅ
     private String FromUserName;
-    // ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½
+    // ÏûÏ¢´´½¨Ê±¼ä £¨ÕûÐÍ£©
     private long CreateTime;
-    // ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í£ï¿½text/music/newsï¿½ï¿½
+    // ÏûÏ¢ÀàÐÍ£¨text/music/news£©
     private String MsgType;
-    // Î»0x0001ï¿½ï¿½ï¿½ï¿½Ö¾Ê±ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+    // Î»0x0001±»±êÖ¾Ê±£¬ÐÇ±ê¸ÕÊÕµ½µÄÏûÏ¢
     private int FuncFlag;
 
     public String getToUserName() {

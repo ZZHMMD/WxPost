@@ -9,17 +9,6 @@ public class UpdateStatusByOrderId {
 	private Short receivestatus;
 	
 	private Integer id;
-	
-	private Date updatetime;
-	
-	
-	public Date getUpdatetime() {
-		return updatetime;
-	}
-
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
-	}
 
 	public UpdateStatusByOrderId(int order,short receive,int id){
 		this.id = id;

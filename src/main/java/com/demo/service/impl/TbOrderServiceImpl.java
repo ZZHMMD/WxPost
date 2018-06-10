@@ -15,9 +15,6 @@ import com.demo.mapper.TbOrderMapper;
 import com.demo.mapper.TbReceiveOrderMapper;
 import com.demo.mapper.TbUserMapper;
 import com.demo.pojo.TbOrder;
-import com.demo.pojo.TbOrderExample;
-import com.demo.pojo.TbReceiveOrder;
-import com.demo.pojo.TbReceiveOrderExample;
 import com.demo.pojo.TbUser;
 import com.demo.pojo.TbUserExample;
 import com.demo.pojo.TbUserExample.Criteria;
@@ -50,7 +47,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 		try{
 			order =  tbOrderMapper.selectByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******���Ҷ���ʧ��******\n"+e);
+			log.info("******查找订单失败******\n"+e);
 		}
 		return order;
 	}
@@ -62,7 +59,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 		try{
 			i = tbOrderMapper.deleteByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******����ɾ��ʧ��******");
+			log.info("******订单删除失败******");
 			e.printStackTrace();
 		}	
 		return i;
@@ -73,12 +70,11 @@ public class TbOrderServiceImpl implements TbOrderService {
 		// TODO Auto-generated method stub
 		int i= 0;
 		try{
-			TbOrderExample example = new TbOrderExample();
 			Date date = new Date();
 			order.setUpdateTime(new Date(date.getTime()));
 			i = tbOrderMapper.updateByPrimaryKeySelective(order);
 		}catch(Exception e){
-			log.info("******��������ʧ��******");
+			log.info("******订单更新失败******");
 			e.printStackTrace();
 		}	
 		return i;
@@ -89,25 +85,26 @@ public class TbOrderServiceImpl implements TbOrderService {
 		// TODO Auto-generated method stub
 		int i= 0;
 		try{
-			
-			// 0����ûע�� 1�������� 2����������� 
+			// 0代表还没注册 1代表正常 2代表基本不够 
 			int flag =  checkUser(order.getOpenid());
 			if(flag == 1){
 				Date date = new Date();
 				order.setCreateTime(new java.sql.Date(date.getTime()));
 				order.setUpdateTime(new java.sql.Date(date.getTime()));
-				//���ö�����״̬1��ʾ���� �Ѿ�������δ���ӵ� 2��ʾ���ӵ� 3��ʾ�����Ѿ��ʹ� 4������ʱ
+				//设置订单的状态1表示的是 已经发单尚未被接单 2表示被接单 3表示订单已经送达 4订单超时
 				order.setStatus(1);
+				order.setEnable(false);
+				
 				i = tbOrderMapper.insert(order);
+				
 			}else if(flag ==2){
 				i=2;
 			}else{
-				//�û���û��ע��
+				//用户还没有注册
 				i=3;
 			}
-			
 		}catch(Exception e){
-			log.info("******�������ʧ��******");
+			log.info("******订单添加失败******");
 			e.printStackTrace();
 		}	
 		return i;
@@ -120,38 +117,41 @@ public class TbOrderServiceImpl implements TbOrderService {
 		try{
 			PageHelper.startPage(pageNum, pageSize);
 			List<TbOrder> list = tbOrderMapper.getOrderList();
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			for(int i=0;i<list.size();i++){
-				
 				TbOrder order = list.get(i);
 				if(order.getHurry()){
 					order.setSize((Integer.parseInt(order.getSize())+1)+"");
 				}
-				order.setShowTime(format.format(order.getUpdateTime()));
+				order.setShowTime(format.format(order.getCreateTime()));
 				order.setReceiveNum("");
 				if(order.getGetAddress().equals("1")){
-					order.setGetAddress("����լ25��");
+					order.setGetAddress("南区宅25栋");
 				}else if(order.getGetAddress().equals("2")){
-					order.setGetAddress("����լ17��");
+					order.setGetAddress("南区宅17栋");
 				}else if(order.getGetAddress().equals("3")){
-					order.setGetAddress("����լ35��");
+					order.setGetAddress("南区宅35栋顺丰");
 				}else if(order.getGetAddress().equals("4")){
-					order.setGetAddress("����7�������鱨ͤ");
+					order.setGetAddress("南区7栋对面书报亭");
 				}else if(order.getGetAddress().equals("5")){
-					order.setGetAddress("����һʳ�����鱨ͤ");
+					order.setGetAddress("火山驿站");
 				}else if(order.getGetAddress().equals("6")){
-					order.setGetAddress("������Ұ���ٺ������վ");
+					order.setGetAddress("北区绿野仙踪后菜鸟驿站");
 				}else if(order.getGetAddress().equals("7")){
-					order.setGetAddress("������С��������");
+					order.setGetAddress("南区宅35栋邮政");
 				}else if(order.getGetAddress().equals("8")){
-					order.setGetAddress("����У�ſ�");
+					order.setGetAddress("南区校门口");
 				}else if(order.getGetAddress().equals("9")){
-					order.setGetAddress("������������");
+					order.setGetAddress("南区后门邮政");
+				}else if(order.getGetAddress().equals("10")){
+					order.setGetAddress("北区京东派");
+				}else if(order.getGetAddress().equals("11")){
+					order.setGetAddress("南区京东派");
 				}
 			}
 			page = new PageInfo<TbOrder>(list);
 		}catch(Exception e){
-			log.info("******��ȡ������ҳʧ��******");
+			log.info("******获取订单分页失败******");
 		}
 		
 		return page;
@@ -167,8 +167,8 @@ public class TbOrderServiceImpl implements TbOrderService {
 		TbUser user = null;
 		if(list.size()>0){
 		 user = list.get(0);
-		 if(user.getCreditScore() <=80){
-				//�˺��������ֹ���
+		 	if(user.getCreditScore() <=80){
+				//账号信誉积分过低
 				return 2;
 			}
 		}else{
@@ -184,7 +184,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 				try{
 					PageHelper.startPage(pageNum, pageSize);
 					List<TbOrder> list = tbOrderMapper.getSelfOrderList(openid);
-					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 					for(int i=0;i<list.size();i++){
 						TbOrder order = list.get(i);
 						if(order.getHurry()){
@@ -197,28 +197,32 @@ public class TbOrderServiceImpl implements TbOrderService {
 						}
 						order.setShowTime(format.format(order.getUpdateTime()));
 						if(order.getGetAddress().equals("1")){
-							order.setGetAddress("����լ25��");
+							order.setGetAddress("南区宅25栋");
 						}else if(order.getGetAddress().equals("2")){
-							order.setGetAddress("����լ17��");
+							order.setGetAddress("南区宅17栋");
 						}else if(order.getGetAddress().equals("3")){
-							order.setGetAddress("����լ35��");
+							order.setGetAddress("南区宅35栋顺丰");
 						}else if(order.getGetAddress().equals("4")){
-							order.setGetAddress("����7�������鱨ͤ");
+							order.setGetAddress("南区7栋对面书报亭");
 						}else if(order.getGetAddress().equals("5")){
-							order.setGetAddress("����һʳ�����鱨ͤ");
+							order.setGetAddress("火山驿站");
 						}else if(order.getGetAddress().equals("6")){
-							order.setGetAddress("������Ұ���ٺ������վ");
+							order.setGetAddress("北区绿野仙踪后菜鸟驿站");
 						}else if(order.getGetAddress().equals("7")){
-							order.setGetAddress("������С��������");
+							order.setGetAddress("南区宅35栋邮政");
 						}else if(order.getGetAddress().equals("8")){
-							order.setGetAddress("����У�ſ�");
+							order.setGetAddress("南区校门口");
 						}else if(order.getGetAddress().equals("9")){
-							order.setGetAddress("������������");
+							order.setGetAddress("南区后门邮政");
+						}else if(order.getGetAddress().equals("10")){
+							order.setGetAddress("北区京东派");
+						}else if(order.getGetAddress().equals("11")){
+							order.setGetAddress("南区京东派");
 						}
 					}
 					page = new PageInfo<TbOrder>(list);
 				}catch(Exception e){
-					log.info("******��ȡ���˶�����ҳʧ��******");
+					log.info("******获取个人订单分页失败******");
 					e.printStackTrace();
 				}
 				return page;
@@ -232,12 +236,10 @@ public class TbOrderServiceImpl implements TbOrderService {
 			TbOrder order = tbOrderMapper.selectByPrimaryKey(Integer.parseInt(id));
 			 if(order.getStatus() == 2){
 				 UpdateStatusByOrderId  pojo = new UpdateStatusByOrderId(3,(short)2,Integer.parseInt(id));
-				 Date date = new Date();
-				 pojo.setUpdatetime(new java.sql.Date(date.getTime()));
 				 i = tbOrderMapper.updateStatusByOrderId(pojo);
 			 }
 		}catch(Exception e){
-			log.info("******���ջ������״̬ʧ��******");
+			log.info("******接收货物更改状态失败******");
 			e.printStackTrace();
 		}
 		return i;
@@ -249,7 +251,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 		try{
 			PageHelper.startPage(pageNum, pageSize);
 			List<TbOrder> list = tbOrderMapper.getHistoryOrderList(openid);
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			for(int i=0;i<list.size();i++){
 				TbOrder order = list.get(i);
 				if(order.getHurry()){
@@ -257,31 +259,103 @@ public class TbOrderServiceImpl implements TbOrderService {
 				}
 				order.setShowTime(format.format(order.getUpdateTime()));
 				if(order.getGetAddress().equals("1")){
-					order.setGetAddress("����լ25��");
+					order.setGetAddress("南区宅25栋");
 				}else if(order.getGetAddress().equals("2")){
-					order.setGetAddress("����լ17��");
+					order.setGetAddress("南区宅17栋");
 				}else if(order.getGetAddress().equals("3")){
-					order.setGetAddress("����լ35��");
+					order.setGetAddress("南区宅35栋顺丰");
 				}else if(order.getGetAddress().equals("4")){
-					order.setGetAddress("����7�������鱨ͤ");
+					order.setGetAddress("南区7栋对面书报亭");
 				}else if(order.getGetAddress().equals("5")){
-					order.setGetAddress("����һʳ�����鱨ͤ");
+					order.setGetAddress("火山驿站");
 				}else if(order.getGetAddress().equals("6")){
-					order.setGetAddress("������Ұ���ٺ������վ");
+					order.setGetAddress("北区绿野仙踪后菜鸟驿站");
 				}else if(order.getGetAddress().equals("7")){
-					order.setGetAddress("������С��������");
+					order.setGetAddress("南区宅35栋邮政");
 				}else if(order.getGetAddress().equals("8")){
-					order.setGetAddress("����У�ſ�");
+					order.setGetAddress("南区校门口");
 				}else if(order.getGetAddress().equals("9")){
-					order.setGetAddress("������������");
+					order.setGetAddress("南区后门邮政");
+				}else if(order.getGetAddress().equals("10")){
+					order.setGetAddress("北区京东派");
+				}else if(order.getGetAddress().equals("11")){
+					order.setGetAddress("南区京东派");
 				}
 			}
 			page = new PageInfo<TbOrder>(list);
 		}catch(Exception e){
-			log.info("******��ȡ���˶�����ҳʧ��******");
+			log.info("******获取个人订单分页失败******");
 			e.printStackTrace();
 		}
 		return page;
+	}
+
+	@Override
+	public int forOurSelt(int orderid) {
+		// TODO Auto-generated method stub
+		int i = 0;
+		try{
+			i = tbOrderMapper.forOurSelf(orderid);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return i;
+	}
+
+	@Override
+	public int getNoAcceptOrderCount() {
+		// TODO Auto-generated method stub
+		return tbOrderMapper.getOrderList().size();
+	}
+
+	@Override
+	public int updateEnableById(TbOrder order) {
+		// TODO Auto-generated method stub
+		int i = 0;
+		try{
+			i =  tbOrderMapper.updateByPrimaryKeySelective(order);
+		}catch(Exception e){
+			log.info("***更新订单取货状态失败***");
+			e.printStackTrace();
+		}
+		return i;
+	}
+
+	@Override
+	public String getPhoneNumByOrderid(int orderid) {
+		// TODO Auto-generated method stub
+		String str =null;
+		try{
+			str = tbUserMapper.getPhoneNumByOrderid(orderid);
+		}catch(Exception e){
+			log.info("***获取用户的电话失败***");
+			e.printStackTrace();
+		}
+		return str;
+	}
+
+	@Override
+	public boolean isFirstTimeUse(String openid) {
+		// TODO Auto-generated method stub
+		boolean flag = (tbOrderMapper.getOrderCountByOpenid(openid)!=0)?false:true;
+		/*
+		boolean _tflag =false;
+		_tflag = isThirdTimeUse(openid);
+		boolean result =false;
+		if(flag || _tflag) {
+			result =true;
+		}*/
+		return flag;
+	}
+
+	@Override
+	public boolean isThirdTimeUse(String openid) {
+		// TODO Auto-generated method stub
+		int count = tbOrderMapper.getThirdCountFrom11_11(openid);
+		boolean _flag =false;
+		if(count !=0)
+		_flag = (count%3 ==0)?true:false;
+		return _flag;
 	}
 
 }

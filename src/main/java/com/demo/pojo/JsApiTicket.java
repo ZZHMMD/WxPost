@@ -1,7 +1,15 @@
 package com.demo.pojo;
 
-public class JsApiTicket {
+import java.io.Serializable;
+
+public class JsApiTicket implements Serializable {
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4541531222515676301L;
+
 	public String ticket;
 	
 	public int expiresIn;

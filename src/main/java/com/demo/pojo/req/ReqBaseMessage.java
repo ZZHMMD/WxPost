@@ -1,19 +1,19 @@
 package com.demo.pojo.req;
 
 /**
- * 锟斤拷息锟斤拷锟洁（锟斤拷通锟矫伙拷 -> 锟斤拷锟斤拷锟绞号ｏ拷
+ * 消息基类（普通用户 -> 公众帐号）
  *
  */
 public class ReqBaseMessage {
-    // 锟斤拷锟斤拷锟斤拷微锟脚猴拷
+    // 开发者微信号
     private String ToUserName;
-    // 锟斤拷锟酵凤拷锟绞号ｏ拷一锟斤拷OpenID锟斤拷
+    // 发送方帐号（一个OpenID）
     private String FromUserName;
-    // 锟斤拷息锟斤拷锟斤拷时锟斤拷 锟斤拷锟斤拷锟酵ｏ拷
+    // 消息创建时间 （整型）
     private long CreateTime;
-    // 锟斤拷息锟斤拷锟酵ｏ拷text/image/location/link锟斤拷
+    // 消息类型（text/image/location/link）
     private String MsgType;
-    // 锟斤拷息id锟斤拷64位锟斤拷锟斤拷
+    // 消息id，64位整型
     private long MsgId;
 
     public String getToUserName() {

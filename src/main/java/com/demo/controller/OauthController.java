@@ -35,7 +35,7 @@ public class OauthController {
 	@Autowired
 	private OauthService oauthService;
 	
-	//������Ϊ�˻�û�ȡaccesstoken ��code
+	//这里是为了获得换取accesstoken 的code
 	@RequestMapping("/usercenter")
 	public String toUserCenter(HttpServletRequest request,HttpServletResponse response) throws Exception {	
 		    String url = oauthService.getOatuchCode();
@@ -45,7 +45,7 @@ public class OauthController {
 	@RequestMapping("/oauth")
 	public String getAk(HttpServletRequest request,Model model){
 		
-		//�����Ƕ��� ��Ȩ�Ĵ���
+		//这里是二次 授权的代码
 		String code = request.getParameter("code");
 		JSONObject jsonObject = oauthService.getAkAndOpenId(code);
 		if(jsonObject!=null){
@@ -57,12 +57,12 @@ public class OauthController {
 		return "index";
 	}
 	
-	@RequestMapping("/jssdkconfig")
+	@RequestMapping(value="/jssdkconfig")
 	@ResponseBody
 	public String getJssdkConfigDetail(String url){
 		String nonceStr = SignatureUtil.create_nonce_str();
 		Long timestamp = Long.parseLong(SignatureUtil.create_timestamp());
-		String jsapi_ticket = JsApiTicketThread.jsApiTicket.getTicket();
+		String jsapi_ticket = AccessTokenThread.jsApiTicket.getTicket();
 		String signature = SignatureUtil.getSignature(jsapi_ticket, url, nonceStr, ""+timestamp);
 		JsSdkConfig config = new JsSdkConfig();
 		config.setAppid(appid);

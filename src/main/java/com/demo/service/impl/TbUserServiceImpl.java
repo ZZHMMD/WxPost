@@ -37,7 +37,7 @@ public class TbUserServiceImpl  implements TbUserService{
 			user.setUpdatetime(new java.sql.Date(date.getTime()));
 			 i = tbUserMapper.insert(user);
 		}catch(Exception e){
-			log.info("******�û����ʧ��******\n");
+			log.info("******用户添加失败******\n");
 			e.printStackTrace();
 		}
 		
@@ -51,7 +51,7 @@ public class TbUserServiceImpl  implements TbUserService{
 		try{
 			i = tbUserMapper.deleteByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******�û�ɾ��ʧ��******\n");
+			log.info("******用户删除失败******\n");
 			e.printStackTrace();
 		}
 		
@@ -67,7 +67,7 @@ public class TbUserServiceImpl  implements TbUserService{
 			user.setUpdatetime(new java.sql.Date(date.getTime()));
 			 i =  tbUserMapper.updateByPrimaryKeySelective(user);
 		}catch(Exception e){
-			log.info("******�û�����ʧ��******\n");
+			log.info("******用户更新失败******\n");
 			e.printStackTrace();
 		}
 		return i;
@@ -80,7 +80,7 @@ public class TbUserServiceImpl  implements TbUserService{
 		try{
 			 user =  tbUserMapper.selectByPrimaryKey(id);
 		}catch(Exception e){
-			log.info("******�û�����ʧ��******\n");
+			log.info("******用户查找失败******\n");
 			e.printStackTrace();
 		}
 		return user;
@@ -101,6 +101,74 @@ public class TbUserServiceImpl  implements TbUserService{
 		try{
 			i  = tbUserMapper.updateUserEnable(userCheck);
 		}catch(Exception e){
+			e.printStackTrace();
+			log.info(e.toString());
+		}
+		return i;
+	}
+
+	@Override
+	public TbUser getUserByPhoneNum(String phonenum) {
+		// TODO Auto-generated method stub
+		TbUser user = null;
+		try {
+			user= tbUserMapper.getUserByPhoneNum(phonenum);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	@Override
+	public List<TbUser> getEnableUser() {
+		// TODO Auto-generated method stub
+		List<TbUser> list = null;
+		try {
+			TbUserExample example = new TbUserExample();
+			example.createCriteria().andEnableEqualTo(true);
+			
+			list = tbUserMapper.selectByExample(example);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public int changeEnable(String phonenum) {
+		// TODO Auto-generated method stub
+		int i=0;
+		try {
+			TbUser user= tbUserMapper.getUserByPhoneNum(phonenum);
+			if(user.getEnable()) {
+				user.setCreditScore(100);
+				user.setEnable(false);
+				i=tbUserMapper.updateByPrimaryKeySelective(user);
+			}else {
+				user.setEnable(true);
+				i=tbUserMapper.updateByPrimaryKeySelective(user);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
+
+	@Override
+	public int changeEnalbeIn(String phonenum) {
+		// TODO Auto-generated method stub
+		int i=0;
+		try {
+			TbUser user= tbUserMapper.getUserByPhoneNum(phonenum);
+			System.out.println(user.toString());
+			if(user.getCreditScore()==666) {
+				user.setCreditScore(100);
+				i=tbUserMapper.updateByPrimaryKeySelective(user);
+			}else {
+				user.setCreditScore(666);
+				i=tbUserMapper.updateByPrimaryKeySelective(user);
+			}
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return i;

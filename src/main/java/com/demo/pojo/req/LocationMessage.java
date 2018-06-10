@@ -1,17 +1,17 @@
 package com.demo.pojo.req;
 
 /**
- * 锟斤拷锟斤拷位锟斤拷锟斤拷息
+ * 地理位置消息
  *
  */
 public class LocationMessage extends ReqBaseMessage {
-    // 锟斤拷锟斤拷位锟斤拷维锟斤拷
+    // 地理位置维度
     private String Location_X;
-    // 锟斤拷锟斤拷位锟矫撅拷锟斤拷
+    // 地理位置经度
     private String Location_Y;
-    // 锟斤拷图锟斤拷锟脚达拷小
+    // 地图缩放大小
     private String Scale;
-    // 锟斤拷锟斤拷位锟斤拷锟斤拷息
+    // 地理位置信息
     private String Label;
 
     public String getLocation_X() {

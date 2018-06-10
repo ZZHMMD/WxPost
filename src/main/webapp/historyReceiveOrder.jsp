@@ -95,14 +95,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<script type="text/javascript">
 				$(function(){
-                    $('.lists').on('click','.studentCard',function(){
-                    	var url = $(this).data("url");
-                    	$('#galleryImg').attr("style", "background-image:url(<%=basePath%>/images/"+url+")");
-                    	$('#galleryImg').fadeIn(100);
-                    });
-                    $('.content').on("click",'#gallery', function() {
+
+					var $galleryImg = $('#galleryImg');
+	 				var $gallery = $('#gallery');
+                     $('.lists').on('click','.studentCard',function(){
+                     	var url = $(this).data("url");
+                     	$galleryImg.attr("style", "background-image:url(<%=basePath%>/images/"+url+")");
+                     	$gallery.fadeIn(100);
+                     });
+                    $gallery.on("click",function() {
 						$gallery.fadeOut(100);
-					});
+	 				});
 					// 页数
 					var page = 1;
 					var openid = getCookie("openid");

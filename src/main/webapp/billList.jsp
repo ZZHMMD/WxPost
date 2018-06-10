@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<h2>我接取的订单</h2>
 					</div>
 				</div>
-				<div class="page__bd page__bd_spacing content">
+				<div class="page__bd page__bd_spacing content" style="padding:0px;">
 				<div class="weui-gallery" id="gallery" style="opacity: 0;display: none;">
 						<span class="weui-gallery__img" id="galleryImg"  ></span>
 				</div>
@@ -80,7 +80,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<c:when test="${item.hurry == true}">是</c:when>
 											<c:otherwise>否</c:otherwise>
 										</c:choose>
-										</font></span>
+										</font>
+										</span>
 									</div>
 									<div class="weui-form-preview__item">
 										<label class="weui-form-preview__label">学生证</label>
@@ -93,17 +94,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="weui-form-preview__ft">
 									<a href="tel:13330308503"  class="weui-form-preview__btn weui-form-preview__btn_primary orderCancel">联系客服</a>
+									<input type="hidden" value="${item.fetchg}">
+										<c:choose>					
+										<c:when test="${item.fetchg}">
+											<a href="javascript:;" data-id="${item.orderId}" class="weui-form-preview__btn weui-form-preview__btn_primary editReceive">已取货</a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:;" data-id="${item.orderId}" class="weui-form-preview__btn weui-form-preview__btn_default unReceive">未取货</a>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</li>
 					</c:forEach>
 					</ul>
 				</div>
+				<div id="loadingToast" style="display:none;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast">
+					<i class="weui-loading weui-icon_toast"></i>
+					<p class="weui-toast__content" id="check"></p>
+				</div>
+				</div>
 			</div>
 			<script type="text/javascript">
 				$(function(){
+					
+					var openid = getCookie("openid");
+			
 					var $galleryImg = $('#galleryImg');
 					var $gallery = $('#gallery');
+					function loadingToast(msg){
+						$loadingToast = $("#loadingToast");
+						$("#check").text(msg)
+						if($loadingToast.css('display') != 'none') return;
+						$loadingToast.fadeIn(100);
+							setTimeout(function() {
+							$loadingToast.fadeOut(200);
+						}, 1000);
+					}
                     $('.lists').on('click','.studentCard',function(){
                     	var url = $(this).data("url");
                     	$galleryImg.attr("style", "background-image:url(<%=basePath%>/images/"+url+")");
@@ -112,16 +141,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     $gallery.on("click",function() {
 						$gallery.fadeOut(100);
 					});
-					// 页数
-					var page = 1;
-					var openid = getCookie("openid");
-					$('.page').dropload({
-						scrollArea : window,
-						threshold : 50,
-			loadDownFn : function(me){
-			page++;
-            var result = '';
-            $.ajax({
+                    $('.page').on('click','.unReceive',function(){
+                    	var id= $(this).data("id");
+                    	$btn = $(this);
+                    	$.ajax({
+                    		url:'/WxPost/order/switchen',
+                    		type:'post',
+                    		dataType:'json',
+                    		data:{'id':id,'enable':true},
+                    		success:function(res){
+                    			var data = JSON.parse(res);
+                    			if(data.msg =="ok"){
+                    				$btn.attr('class','weui-form-preview__btn weui-form-preview__btn_primary editReceive');
+                    				$btn.text('已取货');
+                    			}else{
+                    				loadingToast("未知错误,取货修改失败!");
+                    			}
+                    		}
+                    	});
+                    });
+                    $('.content').on('click','.editReceive',function(){
+						var id= $(this).data("id");
+                    	$btn = $(this);
+							$.ajax({
+								url:'/WxPost/order/switchen',
+								type : 'post',
+								dataType : 'json',
+								data : {'id':id,'enable':false},
+								success : function(res) {
+								var data = JSON.parse(res);
+								if(data.msg =="ok"){
+                    				$btn.attr('class','weui-form-preview__btn weui-form-preview__btn_default unReceive');
+                    				$btn.text('未取货');
+                    			}else{
+                    				loadingToast("未知错误,取货修改失败!");
+                    			}
+						},
+							error:function(res){
+							console.log(res);
+}
+					});
+				});
+			var page=1
+			$('.page').dropload({
+				scrollArea : window,
+				threshold : 50,
+				loadDownFn : function(me){
+				page++;
+            	var result = '';
+           		$.ajax({
             	type: 'GET',
             	url: '/WxPost/receiveorder/pagejson/'+page+'?openid='+openid,
             	dataType: 'json',
@@ -131,6 +199,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             		if(arrLen > 0){
             			for(var i=0; i<arrLen; i++){
 							var choose = (list[i].hurry ==true)?'是':'否';
+							var isreceive = (list[i].enable)?'<a href="javascript:;" data-id="'+list[i].id+'" class="weui-form-preview__btn weui-form-preview__btn_primary editReceive">已取货</a>'
+							:'<a href="javascript:;" data-id="'+list[i].id+'" class="weui-form-preview__btn weui-form-preview__btn_default unReceive" >未取货</a>';
 							result += '<li class="xb-pdTop">'
 							+'<div class="weui-form-preview">'
 							+'	<div class="weui-form-preview__hd">'
@@ -185,6 +255,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							+'	</div>'
 							+'	<div class="weui-form-preview__ft">'
 							+'		<a href="tel:13330308503"  class="weui-form-preview__btn weui-form-preview__btn_primary orderCancel">联系客服</a>'
+							+isreceive
 							+'	</div>'
 							+'</div>'
 						+'</li> '
@@ -197,13 +268,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     me.resetload();
                 },
                 error: function(xhr, type){
-                	alert('Ajax error!');
                     me.resetload();
                 }
             });
         }
     });
-				});
+	});
 			</script>
 		</script>
 		<script src="<%=basePath%>./assert/zepto.min.js"></script>

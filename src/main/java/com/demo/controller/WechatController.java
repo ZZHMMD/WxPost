@@ -23,16 +23,19 @@ public class WechatController {
 	@Autowired
 	private WxService wxService;
 	
-	@RequestMapping(value = "/wechat",method =RequestMethod.GET)
+	@RequestMapping(value = "/wechat",method =RequestMethod.GET,produces = {"text/plain;charset=UTF-8"})
 	@ResponseBody
 	public String checkSignature( HttpServletResponse response,@RequestParam(value="signature",required=false)String signature,@RequestParam(value="nonce",required=false)String nonce,
 			@RequestParam(value="timestamp",required=false)String timestamp,@RequestParam(value="echostr",required=false)String echostr) throws IOException{
-		
+		if(signature.equals(null)||timestamp.equals(null)||nonce.equals(null)){
+			System.out.println("是谁进了这个方法！");
+			return "";
+		}
 		if(StringUtil.checkSignature(signature, timestamp, nonce)){
-			//System.out.println("����ɹ�");
+			//System.out.println("接入成功");
 			return echostr;
 		}
-		//System.out.println("����ʧ��");
+		//System.out.println("接入失败");
 		return "";
 	}
 	

@@ -31,6 +31,12 @@ public interface TbReceiveOrderMapper {
     
     List<SelfReceiveOrder> selectSelfReceiveOrderByOpenid(String openid);
     
+    List<SelfReceiveOrder> selectSelfEnReceiveOrderByOpenid(String openid);
+    
+    List<SelfReceiveOrder> selectSelfDisReceiveOrderByOpenid(String openid);
+    
     List<SelfReceiveOrder> selectSelfHistoryReceiveOrderByOpenid(String openid);
+    
+    List<TbReceiveOrder> selectNoPayOrder();
     
 }

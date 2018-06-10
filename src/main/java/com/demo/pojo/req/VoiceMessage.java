@@ -1,12 +1,12 @@
 package com.demo.pojo.req;
 /**
- * ï¿½ï¿½Æµï¿½ï¿½Ï¢
+ * ÒôÆµÏûÏ¢
  *
  */
 public class VoiceMessage extends ReqBaseMessage {
-    // Ã½ï¿½ï¿½ID
+    // Ã½ÌåID
     private String MediaId;
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+    // ÓïÒô¸ñÊ½
     private String Format;
 
     public String getMediaId() {

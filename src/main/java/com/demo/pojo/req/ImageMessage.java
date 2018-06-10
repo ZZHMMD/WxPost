@@ -1,11 +1,11 @@
 package com.demo.pojo.req;
 
 /**
- * Í¼Æ¬ï¿½ï¿½Ï¢
+ * Í¼Æ¬ÏûÏ¢
  *
  */
 public class ImageMessage extends ReqBaseMessage {
-    // Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
+    // Í¼Æ¬Á´½Ó
     private String PicUrl;
 
     public String getPicUrl() {

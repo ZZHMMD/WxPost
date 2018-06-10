@@ -77,6 +77,9 @@
     id, name, phone_num, school, college, student_card_num, student_card, credit_score, 
     location, enable, createtime, updatetime
   </sql>
+  <select id="getUserByPhoneNum" parameterType="String"  resultMap="BaseResultMap">
+  	select * from tb_user where phone_num=#{phonenum}
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.pojo.TbUserExample" >
     select
     <if test="distinct" >
@@ -96,6 +99,16 @@
     <include refid="Base_Column_List" />
     from tb_user
     where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getPhoneNumByOrderid" resultType="java.lang.String" parameterType="Integer" >
+    SELECT
+		tb_user.phone_num
+	FROM
+		tb_order
+		INNER JOIN tb_user ON tb_order.openid = tb_user.id
+	WHERE
+		tb_order.id = #{orderid}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_user

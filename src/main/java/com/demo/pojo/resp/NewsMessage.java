@@ -3,13 +3,13 @@ package com.demo.pojo.resp;
 import java.util.List;
 
 /**
- * 锟侥憋拷锟斤拷息
+ * 文本消息
  *
  */
 public class NewsMessage extends BaseMessage {
-    // 图锟斤拷锟斤拷息锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷为10锟斤拷锟斤拷锟斤拷
+    // 图文消息个数，限制为10条以内
     private int ArticleCount;
-    // 锟斤拷锟斤拷图锟斤拷锟斤拷息锟斤拷息锟斤拷默锟较碉拷一锟斤拷item为锟斤拷图
+    // 多条图文消息信息，默认第一个item为大图
     private List<Article> Articles;
 
     public int getArticleCount() {

@@ -1,11 +1,11 @@
 package com.demo.pojo.req;
 
 /**
- * 锟侥憋拷锟斤拷息
+ * 文本消息
  *
  */
 public class ReqTextMessage extends ReqBaseMessage {
-    // 锟斤拷息锟斤拷锟斤拷
+    // 消息内容
     private String Content;
 
     public String getContent() {

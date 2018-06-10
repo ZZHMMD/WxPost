@@ -1,7 +1,12 @@
 package com.demo.pojo;
 
-public class UserCheck {
+import java.io.Serializable;
+
+public class UserCheck implements Serializable {
 	
+	
+	private static final long serialVersionUID = 6610015709643536006L;
+
 	private String id;
 	
 	private Boolean enable;
