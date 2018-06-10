@@ -19,119 +19,116 @@ import com.github.pagehelper.PageInfo;
 
 @Service
 public class TbEvaluationServiceImpl implements TbEvaluationService {
-	
-	@Value("${PAGE_SIZE}")
-	public int pageSize;
-	
-	private static Logger log = LoggerFactory.getLogger(TbEvaluationServiceImpl.class);
 
-	@Autowired
-	private TbEvaluationMapper evaluationMapper;
+    @Value("${PAGE_SIZE}")
+    public int pageSize;
 
-	@Override
-	public int insertEvalution(TbEvaluation evaluation) {
-		// TODO Auto-generated method stub
-		int i = 0;
-		try{
-			Date date = new Date();
-			evaluation.setCreateTime(new java.sql.Date(date.getTime()));
-			
-			i = evaluationMapper.insert(evaluation);
-		}catch(Exception e){
-			log.info("******ÐÂÔöÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
-		}
-		return i;
-	}
+    private static Logger log = LoggerFactory.getLogger(TbEvaluationServiceImpl.class);
 
-	@Override
-	public int deleteEvalutionByOrderId(int orderId) {
-		// TODO Auto-generated method stub
-		int i = 0;
-		try{
-			TbEvaluationExample example = new TbEvaluationExample();
-			example.createCriteria().andOrderIdEqualTo(orderId);
-			
-			i = evaluationMapper.deleteByExample(example);
-		}catch(Exception e){
-			log.info("******É¾³ýÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
-		}
-		
-		return i;
-	}
+    @Autowired
+    private TbEvaluationMapper evaluationMapper;
 
-	@Override
-	public TbEvaluation getEvaluationById(int id) {
-		// TODO Auto-generated method stub
-		TbEvaluation evaluation = null;
-		try{
-             evaluation  = evaluationMapper.selectByPrimaryKey(id);
-		}catch(Exception e){
-			log.info("******²éÕÒÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
-		}
-		
-		return evaluation;
-	}
+    @Override
+    public int insertEvalution(TbEvaluation evaluation) {
+        // TODO Auto-generated method stub
+        int i = 0;
+        try {
+            Date date = new Date();
+            evaluation.setCreateTime(new java.sql.Date(date.getTime()));
 
-	@Override
-	public int updateEvaluationById(TbEvaluation evaluation) {
-		// TODO Auto-generated method stub
-		int i = 0;
-		try{
-			i = evaluationMapper.updateByPrimaryKey(evaluation);
-		}catch(Exception e){
-			log.info("******¸üÐÂÆÀÂÛÐÅÏ¢Ê§°Ü******\n"+e);
-		}
-		
-		return i;
-	}
+            i = evaluationMapper.insert(evaluation);
+        } catch (Exception e) {
+            log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n" + e);
+        }
+        return i;
+    }
 
-	@Override
-	public List<TbEvaluation> getAllEvaluationByOrderId(int orderId) {
-		// TODO Auto-generated method stub
-		List<TbEvaluation> list = null;
-		try{
-			list = evaluationMapper.selectEvaluationListByOrderId(orderId);
-		}catch(Exception e){
-			log.info("******²éÕÒÆÀÂÛÁÐ±íÊ§°Ü******\n"+e);
-		}
-		
-		return list;
-	}
+    @Override
+    public int deleteEvalutionByOrderId(int orderId) {
+        // TODO Auto-generated method stub
+        int i = 0;
+        try {
+            TbEvaluationExample example = new TbEvaluationExample();
+            example.createCriteria().andOrderIdEqualTo(orderId);
 
-	@Override
-	public PageInfo<TbEvaluation> getPartEvaluationByOrderId(int orderId,int pageNo) {
-		// TODO Auto-generated method stub
-		PageInfo<TbEvaluation> page = null;
-		try{
-			PageHelper.startPage(pageNo, pageSize);
-			
-			List<TbEvaluation> list = evaluationMapper.selectEvaluationListByOrderId(orderId);
-			 page = new PageInfo<TbEvaluation>(list);
-			
-			
-		}catch(Exception e){
-			log.info("******»ñÈ¡ÆÀÂÛ·ÖÒ³ÐÅÏ¢Ê§°Ü******");
-		}
-		
-		return page;
-	}
+            i = evaluationMapper.deleteByExample(example);
+        } catch (Exception e) {
+            log.info("******É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n" + e);
+        }
 
-	@Override
-	public int deleteEvaluationById(int id) {
-		// TODO Auto-generated method stub
-		int i= 0;
-		try{
-			i= evaluationMapper.deleteByPrimaryKey(id);
-		}catch(Exception e){
-			log.info("******É¾³ýÆÀÂÛÐÅÏ¢Ê§°Ü******\n");
-			e.printStackTrace();
-		}
-		
-		return i;
-	}
+        return i;
+    }
 
-	
-	
-	
-	
+    @Override
+    public TbEvaluation getEvaluationById(int id) {
+        // TODO Auto-generated method stub
+        TbEvaluation evaluation = null;
+        try {
+            evaluation = evaluationMapper.selectByPrimaryKey(id);
+        } catch (Exception e) {
+            log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n" + e);
+        }
+
+        return evaluation;
+    }
+
+    @Override
+    public int updateEvaluationById(TbEvaluation evaluation) {
+        // TODO Auto-generated method stub
+        int i = 0;
+        try {
+            i = evaluationMapper.updateByPrimaryKey(evaluation);
+        } catch (Exception e) {
+            log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n" + e);
+        }
+
+        return i;
+    }
+
+    @Override
+    public List<TbEvaluation> getAllEvaluationByOrderId(int orderId) {
+        // TODO Auto-generated method stub
+        List<TbEvaluation> list = null;
+        try {
+            list = evaluationMapper.selectEvaluationListByOrderId(orderId);
+        } catch (Exception e) {
+            log.info("******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½Ê§ï¿½ï¿½******\n" + e);
+        }
+
+        return list;
+    }
+
+    @Override
+    public PageInfo<TbEvaluation> getPartEvaluationByOrderId(int orderId, int pageNo) {
+        // TODO Auto-generated method stub
+        PageInfo<TbEvaluation> page = null;
+        try {
+            PageHelper.startPage(pageNo, pageSize);
+
+            List<TbEvaluation> list = evaluationMapper.selectEvaluationListByOrderId(orderId);
+            page = new PageInfo<TbEvaluation>(list);
+
+
+        } catch (Exception e) {
+            log.info("******ï¿½ï¿½È¡ï¿½ï¿½ï¿½Û·ï¿½Ò³ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******");
+        }
+
+        return page;
+    }
+
+    @Override
+    public int deleteEvaluationById(int id) {
+        // TODO Auto-generated method stub
+        int i = 0;
+        try {
+            i = evaluationMapper.deleteByPrimaryKey(id);
+        } catch (Exception e) {
+            log.info("******É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½******\n");
+            e.printStackTrace();
+        }
+
+        return i;
+    }
+
+
 }

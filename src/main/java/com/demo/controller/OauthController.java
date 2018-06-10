@@ -21,62 +21,56 @@ import com.demo.service.OauthService;
 import com.demo.util.SignatureUtil;
 
 import net.sf.json.JSONObject;
-import net.sf.json.util.JSONUtils;
 
 
 @Controller
 public class OauthController {
-	
-	@Value("${APPID}")
-	private String appid;
-	
-	private static Logger log = LoggerFactory.getLogger(OauthController.class);
-	
-	@Autowired
-	private OauthService oauthService;
-	
-	//这里是为了获得换取accesstoken 的code
-	@RequestMapping("/usercenter")
-	public String toUserCenter(HttpServletRequest request,HttpServletResponse response) throws Exception {	
-		    String url = oauthService.getOatuchCode();
-		    return "redirect:"+url;
-	}
-	
-	@RequestMapping("/oauth")
-	public String getAk(HttpServletRequest request,Model model){
-		
-		//这里是二次 授权的代码
-		String code = request.getParameter("code");
-		JSONObject jsonObject = oauthService.getAkAndOpenId(code);
-		if(jsonObject!=null){
-			String ak = jsonObject.getString("access_token");
-			String openid = jsonObject.getString("openid");
-			WxUser user = oauthService.getUserDetail(ak, openid);
-			model.addAttribute("user", user);
-		}		
-		return "index";
-	}
-	
-	@RequestMapping(value="/jssdkconfig")
-	@ResponseBody
-	public String getJssdkConfigDetail(String url){
-		String nonceStr = SignatureUtil.create_nonce_str();
-		Long timestamp = Long.parseLong(SignatureUtil.create_timestamp());
-		String jsapi_ticket = AccessTokenThread.jsApiTicket.getTicket();
-		String signature = SignatureUtil.getSignature(jsapi_ticket, url, nonceStr, ""+timestamp);
-		JsSdkConfig config = new JsSdkConfig();
-		config.setAppid(appid);
-		config.setNoncestr(nonceStr);
-		config.setSignature(signature);
-		config.setTimestamp(timestamp);
-		String result =JSON.toJSONString(config);
-		return result;
-	}
-	
-	
-	
-	
-	
-	
+
+    @Value("${APPID}")
+    private String appid;
+
+    private static Logger log = LoggerFactory.getLogger(OauthController.class);
+
+    @Autowired
+    private OauthService oauthService;
+
+    //这里是为了获得换取accesstoken 的code
+    @RequestMapping("/usercenter")
+    public String toUserCenter(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String url = oauthService.getOatuchCode();
+        return "redirect:" + url;
+    }
+
+    @RequestMapping("/oauth")
+    public String getAk(HttpServletRequest request, Model model) {
+
+        //这里是二次 授权的代码
+        String code = request.getParameter("code");
+        JSONObject jsonObject = oauthService.getAkAndOpenId(code);
+        if (jsonObject != null) {
+            String ak = jsonObject.getString("access_token");
+            String openid = jsonObject.getString("openid");
+            WxUser user = oauthService.getUserDetail(ak, openid);
+            model.addAttribute("user", user);
+        }
+        return "index";
+    }
+
+    @RequestMapping(value = "/jssdkconfig")
+    @ResponseBody
+    public String getJssdkConfigDetail(String url) {
+        String nonceStr = SignatureUtil.create_nonce_str();
+        Long timestamp = Long.parseLong(SignatureUtil.create_timestamp());
+        String jsapi_ticket = AccessTokenThread.jsApiTicket.getTicket();
+        String signature = SignatureUtil.getSignature(jsapi_ticket, url, nonceStr, "" + timestamp);
+        JsSdkConfig config = new JsSdkConfig();
+        config.setAppid(appid);
+        config.setNoncestr(nonceStr);
+        config.setSignature(signature);
+        config.setTimestamp(timestamp);
+        String result = JSON.toJSONString(config);
+        return result;
+    }
+
 
 }

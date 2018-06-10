@@ -18,42 +18,42 @@ import com.demo.service.TbDataService;
 
 @Service
 public class TbDataServiceImpl implements TbDataService {
-	
-	@Autowired
-	private TbOrderMapper orderMapper;
-	
-	@Autowired
-	private TbUserMapper userMapper;
-	
-	@Autowired
-	private TbReceiveOrderMapper receiveOrderMapper;
 
-	@Override
-	public List<TbUser> getAllUser() {
-		// TODO Auto-generated method stub
-		TbUserExample example =new TbUserExample();
-		List<TbUser> list =  userMapper.selectByExample(example);
-		System.out.println("getAllUser");
-		
-		return list;
-	}
+    @Autowired
+    private TbOrderMapper orderMapper;
 
-	@Override
-	public List<TbOrder> getAllOrder() {
-		// TODO Auto-generated method stub
-		TbOrderExample example =new TbOrderExample();
-		List<TbOrder> list =  orderMapper.selectByExample(example);
-		System.out.println("getAllOrder");
-		return list;
-	}
+    @Autowired
+    private TbUserMapper userMapper;
 
-	@Override
-	public List<TbReceiveOrder> getAllReceiveOrder() {
-		// TODO Auto-generated method stub
-		TbReceiveOrderExample example =new TbReceiveOrderExample();
-		List<TbReceiveOrder> list =  receiveOrderMapper.selectByExample(example);
-		System.out.println("getAllReceiveOrder");
-		return list;
-	}
+    @Autowired
+    private TbReceiveOrderMapper receiveOrderMapper;
+
+    @Override
+    public List<TbUser> getAllUser() {
+        // TODO Auto-generated method stub
+        TbUserExample example = new TbUserExample();
+        List<TbUser> list = userMapper.selectByExample(example);
+        System.out.println("getAllUser");
+
+        return list;
+    }
+
+    @Override
+    public List<TbOrder> getAllOrder() {
+        // TODO Auto-generated method stub
+        TbOrderExample example = new TbOrderExample();
+        List<TbOrder> list = orderMapper.selectByExample(example);
+        System.out.println("getAllOrder");
+        return list;
+    }
+
+    @Override
+    public List<TbReceiveOrder> getAllReceiveOrder() {
+        // TODO Auto-generated method stub
+        TbReceiveOrderExample example = new TbReceiveOrderExample();
+        List<TbReceiveOrder> list = receiveOrderMapper.selectByExample(example);
+        System.out.println("getAllReceiveOrder");
+        return list;
+    }
 
 }

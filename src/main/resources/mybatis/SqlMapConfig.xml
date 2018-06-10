@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration  
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">  
-<configuration>  
-<typeAliases>  
-<package name="com.demo.pojo"/>  
-</typeAliases>  
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.demo.pojo"/>
+    </typeAliases>
 
-<plugins>
-    <!-- com.github.pagehelper为PageHelper类所在包名 -->
-    <plugin interceptor="com.github.pagehelper.PageHelper">
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageHelper">
             <property name="dialect" value="mysql"/>
             <property name="offsetAsPageNum" value="false"/>
             <property name="rowBoundsWithCount" value="false"/>
@@ -18,5 +18,5 @@
             <property name="supportMethodsArguments" value="false"/>
             <property name="returnPageInfo" value="none"/>
         </plugin>
-</plugins>
+    </plugins>
 </configuration>  
