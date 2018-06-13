@@ -1,6 +1,7 @@
 package com.demo.service.impl;
 
 import java.util.Map;
+
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,10 @@ import com.demo.util.WeixinUtil;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-	
-	private static Logger log = LoggerFactory.getLogger(MenuServiceImpl.class);
 
-	// 菜单创建（POST） 限1000（次/天）
+    private static Logger log = LoggerFactory.getLogger(MenuServiceImpl.class);
+
+    // 菜单创建（POST） 限1000（次/天）
     public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 
     // 菜单查询（POST） 限10000（次/天）
@@ -23,7 +24,6 @@ public class MenuServiceImpl implements MenuService {
 
     // 菜单删除（POST） 限1000（次/天）
     public static String menu_delete_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
-
 
 
     /**
@@ -41,6 +41,7 @@ public class MenuServiceImpl implements MenuService {
 
         return jsonObject;
     }
+
     /**
      * 创建菜单(替换旧菜单)
      *
@@ -48,7 +49,7 @@ public class MenuServiceImpl implements MenuService {
      * @return 0表示成功，其他值表示失败
      * Map<String, Object>
      */
-    public int createMenu(Map<String, Object> menu,String accessToken) {
+    public int createMenu(Map<String, Object> menu, String accessToken) {
         int result = 0;
 
         // 拼装创建菜单的url
@@ -62,7 +63,7 @@ public class MenuServiceImpl implements MenuService {
             if (0 != jsonObject.getInt("errcode")) {
                 result = jsonObject.getInt("errcode");
                 log.error("创建菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-                log.error("****"+jsonMenu+"****");
+                log.error("****" + jsonMenu + "****");
             }
         }
         return result;

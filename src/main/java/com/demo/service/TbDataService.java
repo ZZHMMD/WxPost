@@ -7,9 +7,11 @@ import com.demo.pojo.TbReceiveOrder;
 import com.demo.pojo.TbUser;
 
 public interface TbDataService {
-	
-	List<TbUser> getAllUser();
-	List<TbOrder> getAllOrder();
-	List<TbReceiveOrder>getAllReceiveOrder();
+
+    List<TbUser> getAllUser();
+
+    List<TbOrder> getAllOrder();
+
+    List<TbReceiveOrder> getAllReceiveOrder();
 
 }

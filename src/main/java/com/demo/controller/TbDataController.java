@@ -17,37 +17,37 @@ import com.demo.service.TbDataService;
 @Controller
 @RequestMapping("/data")
 public class TbDataController {
-	
-	@Autowired
-	private TbDataService dataService;
-	
-	
-	@RequestMapping("/lxj1996/getOrder")
-	@ResponseBody
-	public String getOrder(String id){
-		List<TbOrder> list =  dataService.getAllOrder();
-		Result result = new Result();
-		result.setObj(list);
-		return JSON.toJSONString(result);
-	}
-	
-	@RequestMapping("/lxj1996/getUser")
-	@ResponseBody
-	public String getUser(){
-		List<TbUser> list =  dataService.getAllUser();
-		Result result = new Result();
-		result.setObj(list);
-		return JSON.toJSONString(result);
-	}
-	
-	@RequestMapping("/lxj1996/getReceiveOrder")
-	@ResponseBody
-	public String getReceiveOrder(){
-		List<TbReceiveOrder> list =  dataService.getAllReceiveOrder();
-		Result result = new Result();
-		result.setObj(list);
-		return JSON.toJSONString(result);
-	}
-	
+
+    @Autowired
+    private TbDataService dataService;
+
+
+    @RequestMapping("/lxj1996/getOrder")
+    @ResponseBody
+    public String getOrder(String id) {
+        List<TbOrder> list = dataService.getAllOrder();
+        Result result = new Result();
+        result.setObj(list);
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping("/lxj1996/getUser")
+    @ResponseBody
+    public String getUser() {
+        List<TbUser> list = dataService.getAllUser();
+        Result result = new Result();
+        result.setObj(list);
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping("/lxj1996/getReceiveOrder")
+    @ResponseBody
+    public String getReceiveOrder() {
+        List<TbReceiveOrder> list = dataService.getAllReceiveOrder();
+        Result result = new Result();
+        result.setObj(list);
+        return JSON.toJSONString(result);
+    }
+
 
 }
